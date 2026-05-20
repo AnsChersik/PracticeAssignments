@@ -1,21 +1,35 @@
-import { useState } from 'react'
-import './App.css'
-import { Route, Routes } from 'react-router-dom'
-import Register from './Components/Register'
-import Login from './Components/Login'
-
+import { useState } from "react";
+import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import Register from "./Components/Register";
+import Login from "./Components/Login";
+import Requests from "./Components/Requests";
+import { Navigate } from "react-router-dom";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [user, setUser] = useState(null);
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+  };
+
+  if (user) {
+    return <Requests user={user} onLogout={handleLogout} />;
+  }
 
   return (
     <>
-    <Routes>
-      <Route path="/register" element={<Register></Register>}></Route>
-      <Route path="/login" element={<Login></Login>}></Route>
-    </Routes>
+      <Routes>
+        <Route path="/register" element={<Register></Register>}></Route>
+        <Route path="/login" element={<Login onLogin={handleLogin}></Login>}></Route>
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Login({onLogin}) {
   const [formDate, setFormDate] = useState({ login: "", password: "" });
-  const navigate = useNavigate();
 
   function handleChange(e) {
     setFormDate({ ...formDate, [e.target.name]: e.target.value });
@@ -22,9 +21,12 @@ export default function Login() {
       });
 
       const data = await response.json();
-      if (data.length > 0) {
+
+      console.log(data);
+      
+      if (data && data.id) {
         alert("Вы успешно зашли в систему!");
-        navigate("/");
+        onLogin(data)
       } else {
         alert("Проверьте корректность данных");
       }
